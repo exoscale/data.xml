@@ -11,9 +11,7 @@
   clojure.data.xml.test-utils
   (:require [clojure.data.xml :as xml]))
 
-(defn test-stream [x]
+(defn test-stream [^String x]
   (java.io.ByteArrayInputStream. (.getBytes x "UTF-8")))
 
 (def lazy-parse* (comp xml/parse test-stream))
-
-

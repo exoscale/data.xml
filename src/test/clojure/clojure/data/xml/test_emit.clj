@@ -8,10 +8,10 @@
 
 (ns ^{:doc "Tests for emit to print XML text."
       :author "Chris Houser"}
-  clojure.data.xml.test-emit
-  (:use clojure.test
-        clojure.data.xml
-        [clojure.data.xml.test-utils :only (test-stream lazy-parse*)]))
+    clojure.data.xml.test-emit
+  (:require [clojure.test :refer :all]
+            [clojure.data.xml :refer :all]
+            [clojure.data.xml.test-utils :refer [test-stream lazy-parse*]]))
 
 (def deep-tree
   (lazy-parse* (str "<a h=\"1\" i='2' j=\"3\">"
@@ -55,7 +55,7 @@
 
 (defn emit-char-seq [xml-tree encoding]
   (with-open [bos (java.io.ByteArrayOutputStream.)
-        stream (java.io.OutputStreamWriter. bos encoding)]
+        stream (java.io.OutputStreamWriter. bos ^String encoding)]
     (emit xml-tree stream :encoding encoding)
     (.flush stream)
     (map #(if (pos? %) (char %) %) (.toByteArray bos))))
@@ -125,7 +125,7 @@
   (let [nested-xml (lazy-parse* (str "<a><b><c><d>foo</d></c></b></a>"))
         expect (str "<a>\n  <b>\n    <c>\n      <d>foo</d>\n    </c>\n  </b>\n</a>\n")
         result (indent-str nested-xml)]
-    (is (= expect (subs result (.indexOf result "<a>"))))))
+    (is (= expect (subs result (.indexOf ^String result "<a>"))))))
 
 (deftest test-boolean
   (is (= "<?xml version=\"1.0\" encoding=\"UTF-8\"?><foo>true</foo>"

@@ -15,7 +15,7 @@
                              XMLStreamReader
                              XMLStreamConstants)
            (java.nio.charset Charset)
-           (java.io Reader)))
+           (java.io Reader InputStream)))
 
 ; Represents a parse event.
 ; type is one of :start-element, :end-element, or :characters
@@ -323,19 +323,21 @@
       (.setProperty fac prop v))
     fac))
 
+(defn make-stream-reader
+  [^javax.xml.stream.XMLInputFactory fac s]
+  (cond
+    (instance? Reader s)      (.createXMLStreamReader fac ^Reader s)
+    (instance? InputStream s) (.createXMLStreamReader fac ^InputStream s)
+    :else (throw (IllegalArgumentException. "source should be a Reader or InputStream."))))
+
 (defn source-seq
   "Parses the XML InputSource source using a pull-parser. Returns
    a lazy sequence of Event records.  Accepts key pairs
    with XMLInputFactory options, see http://docs.oracle.com/javase/6/docs/api/javax/xml/stream/XMLInputFactory.html
    and xml-input-factory-props for more information. Defaults coalescing true."
   [s & {:as props}]
-  (let [fac (new-xml-input-factory (merge {:coalescing true} props))
-        ;; Reflection on following line cannot be eliminated via a
-        ;; type hint, because s is advertised by fn parse to be an
-        ;; InputStream or Reader, and there are different
-        ;; createXMLStreamReader signatures for each of those types.
-        sreader (.createXMLStreamReader fac s)]
-    (pull-seq sreader)))
+  (let [fac (new-xml-input-factory (merge {:coalescing true} props))]
+    (pull-seq (make-stream-reader fac s))))
 
 (defn parse
   "Parses the source, which can be an

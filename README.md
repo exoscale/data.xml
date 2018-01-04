@@ -5,6 +5,8 @@ library is the successor to
 [lazy-xml](http://clojure.github.com/clojure-contrib/lazy-xml-api.html).
 data.xml has the following features:
 
+[![Build Status](https://secure.travis-ci.org/exoscale/data.xml.png)](http://travis-ci.org/exoscale/data.xml)
+
 * Parses XML documents into Clojure data structures
 * Emits XML from Clojure data structures
 * No additional dependencies if using 1.6
@@ -15,7 +17,7 @@ data.xml has the following features:
 
 This library uses the pull parser that ships with JDK 1.6.  If you running on JDK 1.6+, you do not need any 
 additional dependencies.  If you are using JDK 1.5, you will need to include a dependency on StAX.  More 
-information on this is available [here](https://github.com/clojure/data.xml/blob/jdk16-pull-parser/jdk_15_readme.txt)
+information on this is available [here](https://github.com/exoscale/data.xml/blob/jdk16-pull-parser/jdk_15_readme.txt)
 
 ## Bugs
 
@@ -23,7 +25,7 @@ Please report bugs using JIRA [here](http://dev.clojure.org/jira/browse/DXML).
 
 ## Installation
 
-Latest stable release: 0.0.7
+Latest stable release: 0.0.8.1
 
 * [All Released Versions](http://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22org.clojure%22%20AND%20a%3A%22data.xml%22)
 
@@ -35,19 +37,19 @@ For Maven projects, add the following XML in your `pom.xml`'s `<dependencies>` s
     <dependency>
       <groupId>org.clojure</groupId>
       <artifactId>data.xml</artifactId>
-      <version>0.0.7</version>
+      <version>0.0.8.1</version>
      </dependency>
 
 ### Leiningen
 Add the following to the `project.clj` dependencies:
 
-    [org.clojure/data.xml "0.0.7"]
+    [org.clojure/data.xml "0.0.8.1"]
 
 ## Examples
 
 The examples below assume you have added a `use` for data.xml:
 
-    (use 'clojure.data.xml)
+    (require '[clojure.data.xml :refer :all])
 
 data.xml supports parsing and emitting XML. The parsing functions will
 read XML from a

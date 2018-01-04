@@ -8,9 +8,9 @@
 
 (ns ^{:doc "Tests for seq-tree, building a lazy tree from lazy seq."
       :author "Chris Houser"}
-  clojure.data.xml.test-seq-tree
-  (:use clojure.test
-        clojure.data.xml)
+    clojure.data.xml.test-seq-tree
+  (:require [clojure.test :refer :all]
+            [clojure.data.xml :refer :all])
   (:import (java.lang.ref WeakReference)))
 
 (def tt
@@ -42,7 +42,7 @@
 
 (deftest lazy-end-of-tree
   (is (= 3 (count (first (limit 1 :< 2 :> 3 :>)))))
-  (is (= 3 (count (first (limit 1 :< 2 :> 3 :> 4)))))) 
+  (is (= 3 (count (first (limit 1 :< 2 :> 3 :> 4))))))
 
 (deftest release-head-top
   (let [input (range 10)
@@ -50,7 +50,7 @@
         output (doall (drop 5 (first (tt input))))]
     (System/gc)
     (is (= nil (.get input-ref)))
-    output)) 
+    output))
 
 (deftest release-head-nested-late
   (let [input (list 1 2 :< 3 4 5 :>)
@@ -58,5 +58,4 @@
         output (doall (drop 2 (first (tt input))))]
     (System/gc)
     (is (= nil (.get input-ref)))
-    output)) 
-
+    output))
