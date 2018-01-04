@@ -54,7 +54,7 @@
       (= s "")))
 
 (defn emit-cdata [^String cdata-str ^javax.xml.stream.XMLStreamWriter writer]
-  (when-not (str-empty? cdata-str) 
+  (when-not (str-empty? cdata-str)
     (let [idx (.indexOf cdata-str "]]>")]
       (if (= idx -1)
         (.writeCData writer cdata-str )
@@ -97,7 +97,7 @@
     (if-let [r (seq (rest coll))]
       (cons (next-events (first coll) r) next-items)
       (next-events (first coll) next-items)))
-  
+
   String
   (gen-event [s]
     (Event. :chars nil nil s))
@@ -121,13 +121,13 @@
     (Event. :cdata nil nil (:content cdata)))
   (next-events [_ next-items]
     next-items)
-  
+
   Comment
   (gen-event [comment]
     (Event. :comment nil nil (:content comment)))
   (next-events [_ next-items]
     next-items)
-  
+
   nil
   (gen-event [_]
     (Event. :chars nil nil ""))
@@ -279,7 +279,7 @@
 ; Note, sreader is mutable and mutated here in pull-seq, but it's
 ; protected by a lazy-seq so it's thread-safe.
 (defn- pull-seq
-  "Creates a seq of events.  The XMLStreamConstants/SPACE clause below doesn't seem to 
+  "Creates a seq of events.  The XMLStreamConstants/SPACE clause below doesn't seem to
    be triggered by the JDK StAX parser, but is by others.  Leaving in to be more complete."
   [^XMLStreamReader sreader]
   (lazy-seq
@@ -289,7 +289,7 @@
        (cons (event :start-element
                     (keyword (.getLocalName sreader))
                     (attr-hash sreader) nil)
-             (pull-seq sreader)) 
+             (pull-seq sreader))
        XMLStreamConstants/END_ELEMENT
        (cons (event :end-element
                     (keyword (.getLocalName sreader)) nil nil)
@@ -316,7 +316,7 @@
    :resolver javax.xml.stream.XMLInputFactory/RESOLVER
    :support-dtd javax.xml.stream.XMLInputFactory/SUPPORT_DTD})
 
-(defn- new-xml-input-factory [props]
+(defn- ^javax.xml.stream.XMLInputFactory new-xml-input-factory [props]
   (let [fac (javax.xml.stream.XMLInputFactory/newInstance)]
     (doseq [[k v] props
             :let [prop (xml-input-factory-props k)]]
@@ -373,7 +373,7 @@
 
     (when (instance? java.io.OutputStreamWriter stream)
       (check-stream-encoding stream (or (:encoding opts) "UTF-8")))
-    
+
     (.writeStartDocument writer (or (:encoding opts) "UTF-8") "1.0")
     (doseq [event (flatten-elements [e])]
       (emit-event event writer))
@@ -395,7 +395,7 @@
 
 (defn indent
   "Emits the XML and indents the result.  WARNING: this is slow
-   it will emit the XML and read it in again to indent it.  Intended for 
+   it will emit the XML and read it in again to indent it.  Intended for
    debugging/testing only."
   [e ^java.io.Writer stream & {:as opts}]
   (let [sw (java.io.StringWriter.)
@@ -410,4 +410,3 @@
   (let [^java.io.StringWriter sw (java.io.StringWriter.)]
     (indent e sw)
     (.toString sw)))
-
