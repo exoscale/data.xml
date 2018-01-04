@@ -1,5 +1,5 @@
 (defproject exoscale/data.xml "0.0.8.1"
-  :description "Functions to parse XML into lazy sequences and lazy trees and emit these as tex"
+  :description "Functions to parse XML into lazy sequences and lazy trees and emit these as text"
   :url "https://github.com/exoscale/data.xml"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
